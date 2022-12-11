@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import "package:flutter/services.dart";
+import 'package:flutter_app_node/providers/todo_provider.dart';
+import 'package:flutter_app_node/providers/user_provider.dart';
 import 'package:flutter_app_node/screens/default_screen.dart';
+import 'package:flutter_app_node/utils/router.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -14,10 +18,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      title: 'Flutter Demo',
-      debugShowCheckedModeBanner: false,
-      home: DefaultScreen(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => UserProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => TodoProvider(),
+        ),
+      ],
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        debugShowCheckedModeBanner: false,
+        onGenerateRoute: (settings) => generatedRoute(settings),
+        home: const DefaultScreen(),
+      ),
     );
   }
 }

@@ -3,11 +3,13 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 
 class ListTodoTile extends StatefulWidget {
   final String title;
-  final VoidCallback function;
+  final VoidCallback update;
+  final Function delete;
   const ListTodoTile({
     Key? key,
     required this.title,
-    required this.function,
+    required this.update,
+    required this.delete,
   }) : super(key: key);
 
   @override
@@ -25,13 +27,15 @@ class _ListTodoTileState extends State<ListTodoTile> {
           children: [
             SlidableAction(
               onPressed: (context) {
-                widget.function();
+                widget.update();
               },
               icon: Icons.edit,
               backgroundColor: Colors.blue,
             ),
             SlidableAction(
-              onPressed: (context) {},
+              onPressed: (context) {
+                widget.delete();
+              },
               icon: Icons.delete,
               backgroundColor: Colors.red,
             )

@@ -5,6 +5,7 @@ class TodoModel {
   final int userId;
   String title;
   String content;
+  Map<String, dynamic>? user;
   final dynamic createdAt;
 
   TodoModel({
@@ -12,6 +13,7 @@ class TodoModel {
     required this.userId,
     required this.title,
     required this.content,
+    this.user,
     required this.createdAt,
   });
 
@@ -29,6 +31,7 @@ class TodoModel {
     return TodoModel(
       id: map['id'] ?? 0,
       userId: map['userId'] ?? 0,
+      user: map['user'],
       title: map['title'] ?? '',
       content: map['content'] ?? '',
       createdAt: map['createdAt'] ?? '',

@@ -7,6 +7,7 @@ export interface TodoModel{
   title?: string,
   content?: string,
   createdAt?: Date,
+  updatedAt?: Date,
   save(): unknown,
   destroy(): unknown,
 }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_node/constants/constant.dart';
 import 'package:flutter_app_node/models/todo_model.dart';
+import 'package:flutter_app_node/models/user_model.dart';
 import 'package:flutter_app_node/providers/todo_provider.dart';
 import 'package:flutter_app_node/providers/user_provider.dart';
 import 'package:flutter_app_node/utils/error_handling.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String uri = '$url/dev/api/flutter/todo';
+const String adminUri = '$url/dev/api/flutter/admin/todo';
 
 class TodoResource {
   Future postTodoData({
@@ -58,15 +60,14 @@ class TodoResource {
 
   Future fetchDataTodo({required BuildContext context}) async {
     try {
-      final token =
-          Provider.of<UserProvider>(context, listen: false).user!.token;
+      final user = Provider.of<UserProvider>(context, listen: false).user;
       List<TodoModel> todo = [];
 
       http.Response response = await http.get(
-        Uri.parse(uri),
+        Uri.parse(user!.role == 'admin' ? adminUri : uri),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=utf-8',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer ${user.token}'
         },
       );
 
@@ -138,12 +139,15 @@ class TodoResource {
     required TodoModel todo,
   }) async {
     try {
+      final User? user = Provider.of<UserProvider>(context, listen: false).user;
       final SharedPreferences sharedPreferences =
           await SharedPreferences.getInstance();
       final token = sharedPreferences.getString('token');
 
       http.Response res = await http.delete(
-        Uri.parse("$uri/$id"),
+        user!.role == 'admin'
+            ? Uri.parse("$adminUri/$id")
+            : Uri.parse("$uri/$id"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=utf-8',
           'Authorization': 'Bearer $token'

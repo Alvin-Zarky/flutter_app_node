@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import colors from "colors"
 import userRoute from "./router/userRoute";
 import todoRoute from "./router/todoRoute"
+import adminRoute from "./router/adminRoute"
 import sequelize from "./config/sequelize";
 import User from "./model/User";
 import errorMiddleware from "./middleware/errorMiddleware";
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended:false }));
 
 app.use('/dev/api/flutter/user', userRoute)
 app.use('/dev/api/flutter/todo', todoRoute)
+app.use('/dev/api/flutter/admin', adminRoute)
 app.use('*', (req: Request, res: Response, next: NextFunction) =>{
   res.status(404).send(`Page could not be found ${req.originalUrl}`);
 });

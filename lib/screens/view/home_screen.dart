@@ -63,14 +63,16 @@ class _HomeScreenState extends State<HomeScreen> {
     return isLoading
         ? const LoadingSpinkit()
         : Scaffold(
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                setState(() => isEdit = false);
-                showBottomSheetBar(null, null, null);
-              },
-              backgroundColor: const Color.fromARGB(255, 87, 209, 91),
-              child: const Icon(Icons.add),
-            ),
+            floatingActionButton: user!.role != 'admin'
+                ? FloatingActionButton(
+                    onPressed: () {
+                      setState(() => isEdit = false);
+                      showBottomSheetBar(null, null, null);
+                    },
+                    backgroundColor: const Color.fromARGB(255, 87, 209, 91),
+                    child: const Icon(Icons.add),
+                  )
+                : null,
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Padding(
@@ -114,7 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               width: 7,
                             ),
                             Text(
-                              user?.name ?? '',
+                              user.name,
                               style: kTextTitleHome,
                             ),
                           ],
@@ -172,6 +174,9 @@ class _HomeScreenState extends State<HomeScreen> {
                               itemBuilder: (context, index) {
                                 return ListTodoTile(
                                   title: data.todo[index].title,
+                                  user: user.role == 'admin'
+                                      ? data.todo[index].user!['name']
+                                      : '',
                                   update: () {
                                     setState(() => isEdit = true);
                                     showBottomSheetBar(data.todo[index], index,

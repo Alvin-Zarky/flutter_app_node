@@ -1,6 +1,6 @@
 import express from "express"
 import { deleteTodoRequest, getTodoRequest, postTodoRequest, putTodoRequest } from "../controller/todoController"
-import authTokenMiddleware from "../middleware/authTokenMiddleware"
+import {authRoleToken, authTokenMiddleware} from "../middleware/authTokenMiddleware"
 
 const router= express.Router()
 router.use(authTokenMiddleware)

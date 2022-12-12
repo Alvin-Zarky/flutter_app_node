@@ -1,6 +1,6 @@
 import express from "express"
 import { authGetUserProfile, authUserLogin, authUserLogout, authUserRegister } from "../controller/userController";
-import authTokenMiddleware from "../middleware/authTokenMiddleware";
+import {authTokenMiddleware} from "../middleware/authTokenMiddleware";
 
 const router= express.Router()
 router.post('/', authUserLogin);

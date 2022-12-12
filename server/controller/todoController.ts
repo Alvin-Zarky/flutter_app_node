@@ -53,8 +53,11 @@ const putTodoRequest: RequestHandler= asyncHandler(async(req, res, next) =>{
   if(!todo){
     throw new ErrorHandler(`Data not found`, 404)
   }
-  if(todo.userId !== req.user.id){
-    throw new ErrorHandler(`User not authorized completely`, 401)
+
+  if(req.user.role !== 'admin'){
+    if(todo.userId !== req.user.id){
+      throw new ErrorHandler(`User not authorized completely`, 401)
+    }
   }
 
   todo.title= title

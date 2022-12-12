@@ -1,4 +1,4 @@
-import { RequestHandler } from "express"
+import { NextFunction, Request, RequestHandler } from "express"
 import asyncHandler from "express-async-handler"
 import ErrorHandler from "../utility/errorHandler"
 import jsonwebtoken from "jsonwebtoken"
@@ -38,4 +38,17 @@ const authTokenMiddleware: RequestHandler = asyncHandler(async(req, res, next) =
 
 })
 
-export default authTokenMiddleware
+const authRoleToken = (...roles: string[]) => asyncHandler(async(req, res, next) =>{
+  
+  if(!req.user){
+    throw new ErrorHandler(`User not found`, 404)
+  }
+  if(!roles.includes(req.user.role!)){
+    throw new ErrorHandler(`This user role can't grant access to this router`, 400)
+  }
+  
+  next()
+  
+})
+
+export { authTokenMiddleware, authRoleToken }
